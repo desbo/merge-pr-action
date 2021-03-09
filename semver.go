@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"regexp"
 	"strings"
 
@@ -47,7 +46,7 @@ func parseUpgradeType(s string) (upgradeType, error) {
 	}[strings.TrimSpace(strings.ToLower(s))]
 
 	if !ok {
-		return noChange, fmt.Errorf("unrecognised allowed update value %v", os.Getenv("INPUT_ALLOWED_UPDATE"))
+		return noChange, fmt.Errorf("unrecognised allowed update value %v", s)
 	}
 
 	return parsed, nil
