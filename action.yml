@@ -1,0 +1,12 @@
+name: merge PR
+description: automatically merge dependency update PRs
+inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub token used to perform the merge'
+    required: true
+  ALLOWED_UPDATE:
+    default: patch
+    description: 'the type of update to automatically merge. allowed values: patch, minor, major'
+runs:
+  using: docker
+  image: Dockerfile
