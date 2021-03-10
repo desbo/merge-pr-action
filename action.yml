@@ -1,4 +1,7 @@
 name: merge PR
+branding:
+  icon: git-merge
+  color: green
 description: automatically merge dependency update PRs
 inputs:
   GITHUB_TOKEN:
