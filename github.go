@@ -5,9 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"math"
 	"strings"
-	"time"
 
 	"github.com/google/go-github/v33/github"
 	"golang.org/x/oauth2"
@@ -40,23 +38,7 @@ func (c *authenticatedGitHubClient) refetchPR(pr *github.PullRequest) error {
 	return err
 }
 
-func (c *authenticatedGitHubClient) getMergeableState(pr *github.PullRequest, attempts int, maxAttempts int) (string, error) {
-	if attempts+1 == maxAttempts {
-		return "", fmt.Errorf("gave up waiting for mergeable state to be determined")
-	}
-
-	state := pr.GetMergeableState()
-	log.Printf("current PR state: %v", state)
-
-	if strings.EqualFold(state, "unknown") {
-		time.Sleep(time.Duration(math.Pow(2, float64(attempts+1)) * float64(time.Second)))
-		return c.getMergeableState(pr, attempts+1, maxAttempts)
-	}
-
-	return state, nil
-}
-
-func (c *authenticatedGitHubClient) mergePR(pr *github.PullRequest, maxRetries int) error {
+func (c *authenticatedGitHubClient) mergePR(pr *github.PullRequest, mergeMethod string) error {
 	state := pr.GetMergeableState()
 
 	if strings.EqualFold(state, "conflicting") {
@@ -64,7 +46,7 @@ func (c *authenticatedGitHubClient) mergePR(pr *github.PullRequest, maxRetries i
 	}
 
 	options := &github.PullRequestOptions{
-		MergeMethod: "rebase",
+		MergeMethod: mergeMethod,
 	}
 
 	result, _, err := c.client.PullRequests.Merge(

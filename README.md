@@ -15,6 +15,9 @@ The token of a GitHub user with `repo` access (required to merge PRs). This shou
 ### `ALLOWED_UPDATE`
 Set to either `patch`, `minor` or `major` to control the type of upgrade allowed. Defaults to `patch`. 
 
+### `MERGE_METHOD`
+The [merge method](https://docs.github.com/en/github/administering-a-repository/about-merge-methods-on-github) to use: `merge`, `squash` or `rebase`. Defaults to `merge`.
+
 ### Example usage
 
 ```yaml
@@ -41,4 +44,5 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
         ALLOWED_UPDATE: minor
+        MERGE_METHOD: rebase
 ```

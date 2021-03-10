@@ -6,7 +6,10 @@ inputs:
     required: true
   ALLOWED_UPDATE:
     default: patch
-    description: 'the type of update to automatically merge. allowed values: patch, minor, major'
+    description: 'the type of update to automatically merge. allowed values: "patch", "minor", "major"'
+  MERGE_METHOD:
+    default: merge
+    description: 'the merge method to use. allowed values: "merge", "squash", "rebase"'
 runs:
   using: docker
   image: Dockerfile

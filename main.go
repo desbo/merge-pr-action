@@ -13,7 +13,7 @@ const (
 	payloadPathVariable   = "GITHUB_EVENT_PATH"
 	tokenVariable         = "INPUT_GITHUB_TOKEN"
 	allowedUpdateVariable = "INPUT_ALLOWED_UPDATE"
-	maxRetries            = 10
+	mergeMethodVariable   = "INPUT_MERGE_METHOD"
 )
 
 type pullRequestEvent struct {
@@ -59,9 +59,10 @@ func main() {
 	}
 
 	token := getRequiredEnvVar(tokenVariable)
+	mergeMethod := getRequiredEnvVar(mergeMethodVariable)
 	client := newAuthenticatedClient(token)
 
-	if err := client.mergePR(&event.PullRequest, maxRetries); err != nil {
+	if err := client.mergePR(&event.PullRequest, mergeMethod); err != nil {
 		log.Fatalf("error merging PR: %v", err.Error())
 	}
 
