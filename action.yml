@@ -1,4 +1,4 @@
-name: merge PR
+name: merge depenendecy update PRs
 branding:
   icon: git-merge
   color: green
