@@ -8,6 +8,13 @@ Intended to be included in a workflow that builds and tests the project, to be r
 
 You should also include a condition in the merge job to only run against PRs created by your depenency bot (e.g. `if: github.actor == 'some-bot'` in usage example).
 
+## Use with scala-steward
+Update your `.scala-steward.conf` so that PR titles include both the old and new version number, for example:
+
+```
+commits.message = "Upgrade ${artifactName} from ${currentVersion} to ${nextVersion}"
+```
+
 ## Inputs
 ### `GITHUB_TOKEN`
 The token of a GitHub user with `repo` access (required to merge PRs). This should be provided by a secret, of course.
