@@ -22,6 +22,14 @@ const (
 	major
 )
 
+func (u upgradeType) String() string {
+	return map[upgradeType]string{
+		patch: "patch",
+		minor: "minor",
+		major: "major",
+	}[u]
+}
+
 func (vu *versionUpgrade) UpgradeType() upgradeType {
 	if vu.To.Major > vu.From.Major {
 		return major
