@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	eventNameVariable     = "GITHUB_EVENT_NAME"
 	payloadPathVariable   = "GITHUB_EVENT_PATH"
 	tokenVariable         = "INPUT_GITHUB_TOKEN"
 	allowedUpdateVariable = "INPUT_ALLOWED_UPDATE"
@@ -30,6 +31,12 @@ func getRequiredEnvVar(name string) string {
 }
 
 func main() {
+	if eventName := getRequiredEnvVar(eventNameVariable); eventName != "pull_request" {
+		log.Println("event is not `pull_request`, exiting")
+		os.Exit(0)
+		return
+	}
+
 	payloadPath := getRequiredEnvVar(payloadPathVariable)
 
 	payload, err := ioutil.ReadFile(payloadPath)
@@ -41,6 +48,10 @@ func main() {
 	err = json.Unmarshal(payload, &event)
 	if err != nil {
 		log.Fatalf("error parsing event JSON: %v", err.Error())
+	}
+
+	if event.PullRequest.Title == nil {
+		log.Fatalf("no pull request title in event payload")
 	}
 
 	upgrade, err := parseVersionUpgrade(*event.PullRequest.Title)
