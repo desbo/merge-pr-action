@@ -60,13 +60,15 @@ func main() {
 	}
 	upgradeType := upgrade.UpgradeType()
 
+	log.Printf("detected upgrade type: %v", upgradeType)
+
 	allowedUpgrade, err := parseUpgradeType(os.Getenv(allowedUpdateVariable))
 	if err != nil {
 		log.Fatalf("error parsing allowed upgrade type: %v", err.Error())
 	}
 
 	if !allowed(allowedUpgrade, upgradeType) {
-		log.Printf("upgrade of type %v not allowed, skipping", upgradeType)
+		log.Printf("%v upgrade not allowed, skipping", upgradeType)
 	}
 
 	token := getRequiredEnvVar(tokenVariable)
