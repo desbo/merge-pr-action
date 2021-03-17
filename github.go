@@ -46,7 +46,7 @@ func (c *authenticatedGitHubClient) mergePR(pr *github.PullRequest, mergeMethod 
 	}
 
 	options := &github.PullRequestOptions{
-		MergeMethod: mergeMethod,
+		MergeMethod: strings.ToLower(mergeMethod),
 	}
 
 	result, _, err := c.client.PullRequests.Merge(
