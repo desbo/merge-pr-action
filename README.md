@@ -15,6 +15,11 @@ Update your `.scala-steward.conf` so that PR titles include both the old and new
 commits.message = "Upgrade ${artifactName} from ${currentVersion} to ${nextVersion}"
 ```
 
+## Caveats and future work
+At the moment the action only runs in response to [`pull_request` events](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request). This means that, for the merge to take place, the check suite triggered by the PR being opened must pass and if this isn't the case (for example if a test fails), the merge action won't run, and the PR will need to be merged manually.
+
+It would be possible to update the action to also run on successful [`check_suite` events](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#check_suite); this would require some changes to access the PR title, which is not included in the event payload for non-`pull_request` events.
+
 ## Inputs
 ### `GITHUB_TOKEN`
 The token of a GitHub user with `repo` access (required to merge PRs). This should be provided by a secret, of course.
