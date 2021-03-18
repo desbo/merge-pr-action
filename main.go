@@ -69,6 +69,7 @@ func main() {
 
 	if !allowed(allowedUpgrade, upgradeType) {
 		log.Printf("%v upgrade not allowed, skipping", upgradeType)
+		os.Exit(0)
 	}
 
 	token := getRequiredEnvVar(tokenVariable)
