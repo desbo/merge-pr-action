@@ -60,7 +60,7 @@ func main() {
 	}
 	upgradeType := upgrade.UpgradeType()
 
-	log.Printf("detected upgrade type: %v", upgradeType)
+	log.Printf("detected upgrade: %v", upgrade)
 
 	allowedUpgrade, err := parseUpgradeType(os.Getenv(allowedUpdateVariable))
 	if err != nil {
