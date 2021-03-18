@@ -24,10 +24,15 @@ const (
 
 func (u upgradeType) String() string {
 	return map[upgradeType]string{
+		noChange: "no change",
 		patch: "patch",
 		minor: "minor",
 		major: "major",
 	}[u]
+}
+
+func (vu versionUpgrade) String() string {
+	return fmt.Sprintf("upgrade from %v to %v (%v)", vu.From, vu.To, vu.UpgradeType())
 }
 
 func (vu *versionUpgrade) UpgradeType() upgradeType {
