@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/google/go-github/v33/github"
 )
@@ -54,6 +55,20 @@ func main() {
 		log.Fatalf("no pull request title in event payload")
 	}
 
+	upgradeTypeString := os.Getenv(allowedUpdateVariable)
+
+	if strings.TrimSpace(strings.ToLower(upgradeTypeString)) == "any" {
+		log.Printf("any upgrade type allowed, merging")
+		merge(&event.PullRequest)
+		os.Exit(0)
+		return
+	}
+
+	allowedUpgrade, err := parseUpgradeType(upgradeTypeString)
+	if err != nil {
+		log.Fatalf("error parsing allowed upgrade type: %v", err.Error())
+	}
+
 	upgrade, err := parseVersionUpgrade(*event.PullRequest.Title)
 	if err != nil {
 		log.Fatalf("error parsing upgrade from PR title %v: %v", event.PullRequest.Title, err.Error())
@@ -62,22 +77,20 @@ func main() {
 
 	log.Printf("detected upgrade: %v", upgrade)
 
-	allowedUpgrade, err := parseUpgradeType(os.Getenv(allowedUpdateVariable))
-	if err != nil {
-		log.Fatalf("error parsing allowed upgrade type: %v", err.Error())
-	}
-
 	if !allowed(allowedUpgrade, upgradeType) {
 		log.Printf("%v upgrade not allowed, skipping", upgradeType)
 	}
 
+	merge(&event.PullRequest)
+	os.Exit(0)
+}
+
+func merge(pr *github.PullRequest) {
 	token := getRequiredEnvVar(tokenVariable)
 	mergeMethod := getRequiredEnvVar(mergeMethodVariable)
 	client := newAuthenticatedClient(token)
 
-	if err := client.mergePR(&event.PullRequest, mergeMethod); err != nil {
+	if err := client.mergePR(pr, mergeMethod); err != nil {
 		log.Fatalf("error merging PR: %v", err.Error())
 	}
-
-	os.Exit(0)
 }

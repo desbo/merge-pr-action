@@ -25,9 +25,9 @@ const (
 func (u upgradeType) String() string {
 	return map[upgradeType]string{
 		noChange: "no change",
-		patch: "patch",
-		minor: "minor",
-		major: "major",
+		patch:    "patch",
+		minor:    "minor",
+		major:    "major",
 	}[u]
 }
 
