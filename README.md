@@ -2,7 +2,7 @@
 
 This action merges PRs from automatic dependency upgrade services.
 
-If the PR title includes two SemVer version numbers, and the type of update (patch, minor or major) is allowed by the action configuration, it'll be merged. 
+If the PR title includes two SemVer version numbers, and the type of update (patch, minor or major) is allowed by the action configuration, it'll be merged. There's also an option to force merging regardless of the upgrade type if you don't have SemVer versions in your PR title.
 
 Intended to be included in a workflow that builds and tests the project, to be run as a separate job after these steps have passed successfully.
 
@@ -25,7 +25,9 @@ It would be possible to update the action to also run on successful [`check_suit
 The token of a GitHub user with `repo` access (required to merge PRs). This should be provided by a secret, of course.
 
 ### `ALLOWED_UPDATE`
-Set to either `patch`, `minor` or `major` to control the type of upgrade allowed. Defaults to `patch`. 
+Set to either `patch`, `minor` or `major` to control the type of semver upgrade allowed. Defaults to `patch`. 
+
+You can also set this to `any` to merge any PR without attempting to detect the version change.
 
 ### `MERGE_METHOD`
 The [merge method](https://docs.github.com/en/github/administering-a-repository/about-merge-methods-on-github) to use: `merge`, `squash` or `rebase`. Defaults to `merge`.
