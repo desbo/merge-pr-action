@@ -18,6 +18,10 @@ const (
 	mergeMethodVariable   = "INPUT_MERGE_METHOD"
 )
 
+var (
+	allowedEvents = []string{"pull_request", "pull_request_target"}
+)
+
 type pullRequestEvent struct {
 	PullRequest github.PullRequest `json:"pull_request"`
 }
@@ -31,9 +35,19 @@ func getRequiredEnvVar(name string) string {
 	return value
 }
 
+func checkAllowedEvent(event string) bool {
+	for _, i := range allowedEvents {
+		if i == event {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
-	if eventName := getRequiredEnvVar(eventNameVariable); eventName != "pull_request" {
-		log.Println("event is not `pull_request`, exiting")
+	eventName := getRequiredEnvVar(eventNameVariable)
+	if checkAllowedEvent(eventName) == false {
+		log.Printf("event `%v` is not one of %v, exiting", eventName, allowedEvents)
 		os.Exit(0)
 		return
 	}
