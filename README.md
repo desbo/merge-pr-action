@@ -16,7 +16,7 @@ commits.message = "Upgrade ${artifactName} from ${currentVersion} to ${nextVersi
 ```
 
 ## Caveats and future work
-At the moment the action only runs in response to [`pull_request` events](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request). This means that, for the merge to take place, the check suite triggered by the PR being opened must pass and if this isn't the case (for example if a test fails), the merge action won't run, and the PR will need to be merged manually.
+At the moment the action only runs in response to [`pull_request`](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request) and [`pull_request_target`](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target) events. This means that, for the merge to take place, the check suite triggered by the PR being opened must pass and if this isn't the case (for example if a test fails), the merge action won't run, and the PR will need to be merged manually.
 
 It would be possible to update the action to also run on successful [`check_suite` events](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#check_suite); this would require some changes to access the PR title, which is not included in the event payload for non-`pull_request` events.
 
