@@ -6,7 +6,7 @@ If the PR title includes two SemVer version numbers, and the type of update (pat
 
 Intended to be included in a workflow that builds and tests the project, to be run as a separate job after these steps have passed successfully.
 
-You should also include a condition in the merge job to only run against PRs created by your depenency bot (e.g. `if: github.actor == 'some-bot'` in usage example).
+You should also include a condition in the merge job to only run against PRs created by your dependency bot (e.g. `if: github.actor == 'some-bot'` in usage example).
 
 ## Use with scala-steward
 Update your `.scala-steward.conf` so that PR titles include both the old and new version number, for example:
